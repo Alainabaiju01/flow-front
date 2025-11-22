@@ -1,3 +1,3 @@
 // src/services/serverURL.js
-const serverURL = "https://readflow-backend-3.onrender.com";
+export const serverURL = "http://localhost:3001";
 export default serverURL;
