@@ -1,5 +1,5 @@
 // src/pages/Wish.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { MdDelete } from "react-icons/md";
 import { getWishlistAPI, addWishlistAPI, removeWishlistAPI } from "../services/allAPI";
@@ -16,22 +16,22 @@ export default function Wish() {
     fetchWishlist();
   }, []);
 
-  // CORRECT: fetch wishlist (GET)
-  async function fetchWishlist() {
+  const  fetchWishlist =  async  ()=> {
     try {
-      const data = await getWishlistAPI(); // returns parsed JSON via commonAPI
-      setWishlist(Array.isArray(data) ? data : []);
+      const data = await getWishlistAPI(); // gets the data from db
+      setWishlist(data);
     } catch (err) {
       console.error("Failed to load wishlist:", err);
       setWishlist([]);
     }
   }
 
-  // Fetch Google Books
   const fetchApi = async () => {
     if (!query.trim()) return;
+    // if user gives an input
     setLoading(true);
-    setResults([]);
+    // to clear previous search results
+    setResults([]); 
 
     try {
       const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(
@@ -47,7 +47,7 @@ export default function Wish() {
     }
   };
 
-  // Add book to wishlist (uses addWishlistAPI so we don't hardcode port)
+  // Add book to wishlist
   const addToWishlist = async (book) => {
     const info = book.volumeInfo || {};
 
@@ -164,7 +164,6 @@ export default function Wish() {
               <CiSearch size={24} style={{ cursor: "pointer" }} onClick={fetchApi} />
             </div>
 
-            {/* Dropdown results (anchored to the centered search width) */}
             {results.length > 0 && (
               <div
                 style={{
@@ -181,6 +180,7 @@ export default function Wish() {
                   boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
                 }}
               >
+                {/* When loading is true, it means the app is currently fetching data. */}
                 {loading && <div style={{ padding: 10 }}>Searching...</div>}
                 {results.map((book) => {
                   const info = book.volumeInfo || {};
@@ -240,7 +240,7 @@ export default function Wish() {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                height: 390,               // fixed card height
+                height: 390,              
                 boxSizing: "border-box",
                 overflow: "hidden",
               }}

@@ -7,7 +7,7 @@ import { MdDelete } from "react-icons/md";
 export default function Red() {
   const [reads, setReads] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [processingId, setProcessingId] = useState(null); // single-button loading
+  const [processingId, setProcessingId] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [reviewDraft, setReviewDraft] = useState("");
   const [savingReviewId, setSavingReviewId] = useState(null);
@@ -35,6 +35,7 @@ export default function Red() {
   async function handleDelete(id, title) {
     if (!window.confirm(`Delete "${title}" permanently?`)) return;
     try {
+      // Mark which book is currently being processed
       setProcessingId(id);
       await deleteReadAPI(id);
       setReads((prev) => prev.filter((r) => r.id !== id));
@@ -67,7 +68,7 @@ export default function Red() {
 
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
-      {/* Blurred background layer (only background gets blurred) */}
+
       <div
         style={{
           position: "absolute",
@@ -77,23 +78,23 @@ export default function Red() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          filter: "blur(6px)",         // adjust blur strength here
-          transform: "scale(1.03)",    // prevents edge artifacts from blur
+          filter: "blur(6px)",
+          transform: "scale(1.03)",
           zIndex: 0,
         }}
       />
 
-      {/* Optional translucent overlay to darken background slightly */}
+
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0,0,0,0.18)", // tweak opacity to taste
+          background: "rgba(0,0,0,0.18)",
           zIndex: 1,
         }}
       />
 
-      {/* Main content (NOT blurred) */}
+
       <div
         style={{
           position: "relative",
@@ -132,7 +133,7 @@ export default function Red() {
                   flexDirection: "column",
                   justifyContent: "space-between",
                   height: 470,
-                  width: 250,              // fixed card height
+                  width: 250,
                   boxSizing: "border-box",
                   overflow: "hidden",
                 }}
@@ -168,15 +169,13 @@ export default function Red() {
                   <div style={{ marginTop: 8, fontSize: 13, color: "#444" }}>
                     Finished on: {book.dateFinished}
                   </div>
-                  {/* Review display + Edit button */}
+
                   <div style={{ marginTop: 10, fontSize: 15, color: "#333" }}>
-                    {/* top row: current review (or placeholder) and Edit button */}
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
                       <div style={{ flex: 1, minHeight: 60 }}>
                         {book.review ? <div style={{ paddding: "20px", border: "solid", }}>{book.review}</div> : <em>No review yet</em>}
                       </div>
                       <div style={{ fontsize: "50px" }} className="d-flex align-items-center justify-content-center">
-                        {/* Edit button visible when NOT editing this book */}
                         {editingId !== book.id && (
 
                           <button
@@ -191,23 +190,22 @@ export default function Red() {
 
                     </div>
 
-                    {/* Inline editor (only when editing this book) */}
                     {editingId === book.id && (
-                      <div style={{ marginTop: 8 ,display:"flex"}}>
+                      <div style={{ marginTop: 8, display: "flex" }}>
                         <input
                           value={reviewDraft}
                           onChange={(e) => setReviewDraft(e.target.value)}
                           placeholder="Write a review..."
                           style={{ width: "100%", padding: 8, borderRadius: 6, border: "1px solid #110404ff" }}
                         />
-                        
-                          <button onClick={() => handleSaveReview(book.id)} disabled={savingReviewId === book.id}>
-                            {savingReviewId === book.id ? "Saving..." : "Save"}
-                          </button>
-                          
-                    
-                        </div>
-                    
+
+                        <button onClick={() => handleSaveReview(book.id)} disabled={savingReviewId === book.id}>
+                          {savingReviewId === book.id ? "Saving..." : "Save"}
+                        </button>
+
+
+                      </div>
+
                     )}
                   </div>
 

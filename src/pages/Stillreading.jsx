@@ -1,7 +1,7 @@
 // src/pages/Stillreading.jsx
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { CiSearch } from "react-icons/ci";
-import { MdDelete } from "react-icons/md";
+
 
 import {
   addStillReadingAPI,
@@ -15,7 +15,7 @@ export default function Stillreading() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]); // Google search results
   const [loadingSearch, setLoadingSearch] = useState(false);
-  const [still, setStill] = useState([]); // items from /stillreading
+  const [still, setStill] = useState([]); // items from stillreading
   const [addingId, setAddingId] = useState(null);
   const [savingId, setSavingId] = useState(null);
   const dropdownRef = useRef(null);
@@ -89,7 +89,7 @@ export default function Stillreading() {
     }
   }
 
-  // Update pages read / pageCount (save bookmark)
+  // (save bookmark)
   async function handleSaveProgress(itemId, updates) {
     try {
       setSavingId(itemId);
@@ -103,7 +103,7 @@ export default function Stillreading() {
     }
   }
 
-  // Mark as read: POST to /read then DELETE from /stillreading
+  // Mark as read: POST to read then DELETE from stillreading
   async function handleMarkAsRead(item) {
     if (!confirm(`Mark "${item.title}" as read and move to Read?`)) return;
 
@@ -129,10 +129,9 @@ export default function Stillreading() {
     }
   }
 
-  // ---- RENDER ----
   return (
     <div style={{ position: "relative", minHeight: "100vh" }}>
-      {/* Blurred background layer (ONLY background gets blurred) */}
+  
       <div
         style={{
           position: "absolute",
@@ -142,13 +141,13 @@ export default function Stillreading() {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          filter: "blur(6px)", // adjust blur strength
-          transform: "scale(1.03)", // prevents edges from showing due to blur
+          filter: "blur(6px)", 
+          transform: "scale(1.03)", 
           zIndex: 0,
         }}
       />
 
-      {/* Optional dark overlay on top of blurred background */}
+      
       <div
         style={{
           position: "absolute",
@@ -158,7 +157,7 @@ export default function Stillreading() {
         }}
       />
 
-      {/* Main content (NOT blurred) */}
+    
       <div
         style={{
           position: "relative",
@@ -172,8 +171,6 @@ export default function Stillreading() {
         <div style={{ padding: 20, width: "100%", boxSizing: "border-box" }}>
 
 
-          {/* SEARCH AREA — uses the same look/behavior as your Wish.jsx input */}
-          {/* Centered search area (keeps search bar centered within a narrower column) */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 18 }}>
 
             <div style={{ width: "min(900px, 100%)", position: "relative" }}>
@@ -206,7 +203,6 @@ export default function Stillreading() {
                 <CiSearch size={24} style={{ cursor: "pointer" }} onClick={fetchApi} />
               </div>
 
-              {/* Dropdown anchored to the same centered width */}
               {results.length > 0 && (
                 <div
                   ref={dropdownRef}
@@ -286,7 +282,7 @@ export default function Stillreading() {
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
-                  height: 390,               // fixed card height
+                  height: 390,              
                   boxSizing: "border-box",
                   overflow: "hidden",
 
