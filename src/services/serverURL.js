@@ -1,3 +1,3 @@
 // src/services/serverURL.js
-export const serverURL = "http://localhost:3001";
+export const serverURL = "https://flow-front-igxk.onrender.com";
 export default serverURL;
